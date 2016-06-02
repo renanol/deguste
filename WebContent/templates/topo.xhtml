@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div id="topo">
+	
+	<h:form id="formTopo" >
+	<div id="logo">
+			<a href="/deguste">
+				<img src="/deguste/imagem/LogoDguste.png" width="200" height="70" alt="logo D'guste" />
+			</a>
+		</div>
+		
+		<div id="tituloTopo">
+			<p class="titulo"> SISTEMA DE ALMOXARIFADO </p>
+			</div>
+		</h:form>
+		
+		<h:panelGroup style="float:right">
+					<h:outputText styleClass="textoPequeno" value="Sua sessão irá expirar em: " />
+					<h:outputText styleClass="textoPequeno" value="" id="sessaoUsuario" />
+				</h:panelGroup>	
+
+		<div style="clear: both"></div>
+		<ui:include src="menu.xhtml" />
+	</div>
+</ui:composition>

@@ -1,0 +1,85 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/common.xhtml">
+	<ui:define name="body">
+		<h:form acceptcharset="ISO-8859-1" styleClass="formLogin">
+
+			<div id="divLogin"
+				style="height: 320px; width: 339px; margin: auto !important; margin-top: 30px !important;">
+				<p:panel styleClass="headerPainel" header="Por favor, altere sua senha">
+
+
+					<p:messages id="messageLogin" autoUpdate="false" closable="true" />
+					<h:panelGrid columns="1">
+						<h:panelGrid>
+							<p:outputLabel styleClass="outputLogin" value="Senha" />
+							<p:password styleClass="inputLogin" required="true"
+								id="novaSenha" label="Nova senha" placeholder="Digite uma nova senha"
+								value="#{usuarioBean.novaSenha}" size="20"
+								weakLabel="Força da senha : Fraca" feedback="true"
+								promptLabel="Por favor, insira sua senha"
+								goodLabel="Força da senha : Média"
+								strongLabel="Força da senha : Forte" match="confirmacao"
+								requiredMessage="A senha é obrigatória"
+								validatorMessage="As senhas não conferem ou possui mais de 8 caracteres">
+								<f:validateLength minimum="8" />
+							</p:password>
+						</h:panelGrid>
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<h:panelGrid>
+							<p:outputLabel styleClass="outputLogin" value="Confirmar senha" />
+							<p:password styleClass="inputLogin" required="true"
+								id="confirmacao" label="Confirmacao" size="20"
+								value="#{usuarioBean.novaSenha}"
+								validatorMessage="As senhas não conferem"
+								requiredMessage="Confirme a senha"
+								placeholder="Confirme sua senha" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+					<p:spacer height="5px" />
+
+					<h:panelGrid columns="2">
+						<h:panelGrid>
+							<b:commandButton styleClass="botaoLogar" look="success"
+								action="#{usuarioBean.alteraSenha()}" value="Alterar senha" />
+						</h:panelGrid>
+						
+						<h:panelGrid>
+							<b:commandButton immediate="true" styleClass="botaoLogar" look="danger"
+								action="#{sessionBean.logout()}" value="Cancelar" />
+						</h:panelGrid>
+						
+					</h:panelGrid>
+				</p:panel>
+			</div>
+		</h:form>
+
+		<h:form id="formRedirect">
+		<p:dialog header="Senha Alterada com Sucesso!"
+			widgetVar="dlgSenha" modal="true" closable="false"
+			closeOnEscape="false" showEffect="puff" resizable="false"
+			style="text-align:center;">
+			
+			
+				
+				<p:ajax event="close" listener="#{usuarioBean.alteraSenhaRedirect}" />
+				<p:commandButton id="senhaAlteradaBtn" value="Ok"
+					action="#{usuarioBean.alteraSenhaRedirect}" ajax="false"
+					 styleClass="ui-confirmdialog-yes" icon="ui-icon-key">
+				</p:commandButton>
+			
+		</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

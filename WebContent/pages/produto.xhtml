@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/common.xhtml">
+	<ui:define name="body">
+
+		<p:outputPanel id="produto">
+			<h:panelGroup rendered="#{produtoBean.cadastroRendered}"
+				id="panelCadastroproduto">
+
+				<p:panel header="#{msg['produto.register']}">
+					<h:form id="formCadastroproduto"
+						rendered="#{produtoBean.cadastroRendered}">
+
+						<p:toolbar id="tbprodutoCadastrar" acceptcharset="ISO-8859-1">
+							<f:facet name="left">
+								<p:commandButton value="#{msg['msg.comum.botao.salvar']}"
+									ajax="true"
+									actionListener="#{produtoBean.cadastroProduto()}"
+									icon="ui-icon-disk" update=":panelCadastroproduto" />
+
+								<p:commandButton value="#{msg['msg.comum.botao.pesquisar']}"
+									ajax="true" immediate="true" icon="ui-icon-search"
+									action="#{produtoBean.acaoPesquisar()}" update=":produto">
+									<p:ajax event="click" />
+								</p:commandButton>
+								<p:commandButton value="#{msg['msg.comum.botao.novo']}"
+									icon="ui-icon-document" ajax="true" process="@this"
+									update=":panelCadastroproduto"
+									actionListener="#{produtoBean.limpar()}" />
+
+							</f:facet>
+						</p:toolbar>
+
+						<p:spacer style="width:100%; height:20px" />
+
+						<p:panel>
+							<p:messages id="msgCadastroproduto" closable="true" />
+
+							<fieldset>
+				<legend>Produto</legend>
+				
+				<h:panelGrid columns="1" >
+					<h:panelGrid>
+						<p:inputTextarea id="codigoDoProduto" placeholder="Digite o código ou use o leitor de códigos de barra" required="true"
+							value="#{produtoBean.produto.codigo}" style="width: 503px; height:30px;"
+							maxlength="255"
+							requiredMessage="O código do produto é obrigatório">
+						</p:inputTextarea>
+					</h:panelGrid>
+				</h:panelGrid>
+				
+				
+				<h:panelGrid columns="1" >
+					<h:panelGrid>
+						<p:outputLabel for="nomeDoProduto" value="Descrição:" />
+						<p:inputText id="nomeDoProduto" required="true"
+							value="#{produtoBean.produto.nome}" style="width: 503px;"
+							maxlength="255"
+							requiredMessage="O nome ou descrição do produto é obrigatório">
+						</p:inputText>
+					</h:panelGrid>
+				</h:panelGrid>
+				
+					<h:panelGrid columns="3" >
+					<h:panelGrid>
+						<p:outputLabel for="preçoDoProduto" value="Preço:" />
+						<p:inputText id="preçoDoProduto" required="true"
+							value="#{produtoBean.produto.preco}" styleClass="inputText" style="width: 100px;  font-size:18px !important;"
+							maxlength="13"
+							requiredMessage="O preço do produto é obrigatório"   >
+							<f:convertNumber />	
+						<p:ajax event="change"  update="lucroDoProduto"   />
+						</p:inputText>
+					</h:panelGrid>
+					
+					<h:panelGrid>
+						<p:outputLabel for="custoDoProduto" value="Custo:" />
+						<p:inputText id="custoDoProduto" required="true"
+							value="#{produtoBean.produto.custo}" style="width: 100px; font-size:18px !important;"
+							maxlength="12"
+							requiredMessage="O custo do produto é obrigatório"  >
+						<f:convertNumber  />
+						<p:ajax event="change" listener="#{produtoBean.lucro}" update="lucroDoProduto"   />
+						</p:inputText>
+					</h:panelGrid>
+				
+				<h:panelGrid>
+						<p:outputLabel for="lucroDoProduto" value="Lucro:" />
+						<p:inputText id="lucroDoProduto" readonly="true"
+							value="#{produtoBean.produto.lucro}%" style="width: 110px; font-size:18px !important;">
+						</p:inputText>
+					</h:panelGrid>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1" >
+					<h:panelGrid>
+						<p:outputLabel for="fornecedor" value="Fornecedor:"/>	
+						<p:selectOneMenu id="fornecedor" converter="entityConverter" value="#{produtoBean.produto.fornecedor}" style="width:283px;">
+							<f:selectItems value="#{produtoBean.listaFornecedores()}"/>
+						</p:selectOneMenu>
+					</h:panelGrid>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1" >
+					<h:panelGrid>
+						<p:outputLabel for="obs" value="Observação:" />
+						<p:inputTextarea id="obs"  
+							value="#{produtoBean.produto.observacao}" style="width: 503px; height:45px;"
+							maxlength="255">
+						</p:inputTextarea>
+					</h:panelGrid>
+				</h:panelGrid>
+				<p></p>
+			</fieldset>
+			
+			<p:spacer height="15px;"/>
+			
+			<fieldset>
+				<legend>Categoria</legend>
+				<h:panelGrid columns="2" >
+					<h:panelGrid>
+						<p:outputLabel for="categoria" value="Tipo de Categoria:"/>	
+						<p:selectOneMenu id="categoria" converter="entityConverter" value="#{produtoBean.produto.categoria}" style="width:285px;">
+							<f:selectItems value="#{produtoBean.listaCategorias()}"/>
+						</p:selectOneMenu>
+					</h:panelGrid>
+					
+					<h:panelGrid>
+					<p:outputLabel value=""/>	
+					<p:commandButton value="Nova Categoria" type="button" onclick="PF('categoriaDialog').show();"  
+					update=":formCadastroC, categoriaDialog" 
+					style="margin-left:20px; margin-top:10px; border-style: none;  height:20px !important;"/>
+					</h:panelGrid>
+				</h:panelGrid>
+				
+					<h:panelGrid columns="2" >
+					<h:panelGrid>
+						<p:outputLabel for="unidade" value="Unidade Medida:"/>	
+						<p:selectOneMenu id="unidade" converter="entityConverter" value="#{produtoBean.produto.unidadeMedida}" style="width:285px;">
+							<f:selectItems value="#{produtoBean.listaUnidades()}" />
+						</p:selectOneMenu>
+					</h:panelGrid>
+					
+					<h:panelGrid>
+					<p:outputLabel value=""/>	
+					<p:commandButton value="Nova Unidade" type="button" style="margin-left:22px; margin-top:10px; border-style: none; 
+					height:20px !important;" onclick="PF('unidadeDialog').show();" update=":formUnidadeM"/>
+					</h:panelGrid>
+				</h:panelGrid>
+			</fieldset>
+			
+			<p:spacer height="15px;"/>
+			
+			<fieldset>
+				<legend>Estoque</legend>
+			<h:panelGrid columns="3">
+				<h:panelGrid>
+					<p:outputLabel for="estoqueAtual" value="Quantidade atual em estoque:"/>				
+					<p:inputText id="estoqueAtual" required="true" requiredMessage="O campo quantidade atual em estoque deve ser preenchido" 
+					value="#{produtoBean.produto.estoque}" style="width:80px;"/>
+				</h:panelGrid>
+				
+				<h:panelGrid>
+					<p:outputLabel for="estoqueMax" style="margin-left:15px;" value="Limite máximo em estoque:"/>				
+					<p:inputText id="estoqueMax"  value="#{produtoBean.produto.estoqueMax}" style="width:80px; margin-left:15px;"/>
+				</h:panelGrid>
+				
+				<h:panelGrid>
+					<p:outputLabel for="estoqueMin" style="margin-left:15px;" value="Limite mínimo em estoque:"/>				
+					<p:inputText id="estoqueMin"  value="#{produtoBean.produto.estoqueMin}" style="width:80px; margin-left:15px;"/>
+				</h:panelGrid>
+			</h:panelGrid>
+			
+				<p></p>
+			</fieldset>
+
+
+						</p:panel>
+
+
+
+					</h:form>
+				</p:panel>
+			</h:panelGroup>
+
+
+			<h:panelGroup id="panelPesquisaproduto"
+				rendered="#{produtoBean.pesquisaRendered}">
+				<h:form id="formPesquisaproduto"
+					rendered="#{produtoBean.pesquisaRendered}">
+					<p:defaultCommand target="findButton" />
+
+					<p:panel header="#{msg['produto.search']}" style="width: 99.3%;">
+						<p:toolbar id="tbCargoPesquisar">
+							<f:facet name="left">
+								<p:commandButton value="#{msg['msg.comum.botao.novo']}"
+									ajax="true" immediate="true" icon="ui-icon-document">
+									<p:ajax event="click" update=":produto"
+										listener="#{produtoBean.acaoCadastrar()}" />
+								</p:commandButton>
+								<p:commandButton value="#{msg['msg.comum.botao.limpar']}"
+									ajax="true" icon="ui-icon-cancel">
+									<p:ajax event="click" listener="#{produtoBean.limpaBean()}"
+										update=":panelPesquisaproduto" />
+								</p:commandButton>
+							</f:facet>
+						</p:toolbar>
+						<p:separator style="width:100%;height:5px;" />
+						<h:panelGrid>
+							<h:panelGrid>
+								<h:panelGrid columns="2">
+									<h:panelGrid>
+										<p:outputLabel value="#{msg['produto.nome']}"
+											for="produtoNome" />
+										<p:inputText id="produtoNome"
+											label="#{msg['produto.nome']}"
+											value="#{produtoBean.produto.nome}"
+											style="width: 300px">
+										</p:inputText>
+									</h:panelGrid>
+								</h:panelGrid>
+							</h:panelGrid>
+
+							<p:spacer style="width:100%; height:10px" />
+
+							<f:facet name="footer">
+								<h:panelGrid columns="1">
+									<p:commandButton id="findButton"
+										value="#{msg['msg.comum.pesquisar']}" icon="ui-icon-search"
+										ajax="true"
+										actionListener="#{produtoBean.procurarProduto()}"
+										update="formPesquisaproduto">
+									</p:commandButton>
+								</h:panelGrid>
+							</f:facet>
+							<p:messages id="msgPesquisaproduto" closable="true" />
+						</h:panelGrid>
+						<p:separator style="width:100%;height:5px;" />
+
+						<br />
+
+						<p:dataTable id="produtos" var="produto"
+							value="#{produtoBean.listaProdutos}"
+							rowKey="#{produto.id}" 
+							rendered="#{produtoBean.dtRender}" paginator="true" rows="10"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="10,20,30" scrollRows="10" scrollable="true"
+							scrollHeight="150" lazy="true" 
+							emptyMessage="Nenhum Registro Encontrado">
+
+
+							<p:column style="text-align: center;width:60px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['produto.id']}" />
+								</f:facet>
+								<h:outputText value="#{produto.id} ">
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: left;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['produto.nome']}" />
+								</f:facet>
+								<h:outputText value="#{produto.nome}" />
+							</p:column>
+							
+							<p:column style="text-align: center;">
+								<f:facet name="header">
+									<h:outputText value="Preço" />
+								</f:facet>
+								<h:outputText value="#{produto.preco}" />
+							</p:column>
+
+							<p:column style="text-align: center;">
+								<f:facet name="header">
+									<h:outputText value="Código" />
+								</f:facet>
+								<h:outputText value="#{produto.codigo}" />
+							</p:column>
+
+
+							<p:column headerText="Info" style="width:25px;text-align: center"
+								width="5%">
+								<p:commandButton icon="ui-icon-search" update=":infoproduto"
+									oncomplete="PF('infoDialog').show()" process="@this">
+									<f:setPropertyActionListener value="#{produto}"
+										target="#{produtoBean.produto}" />
+								</p:commandButton>
+							</p:column>
+
+							<p:column width="90" style="text-align: center;"
+								headerText="Alterar">
+								<p:commandButton icon="ui-icon-wrench" ajax="true"
+									action="#{produtoBean.acaoAlterar(produto)}"
+									update=":produto" />
+
+							</p:column>
+
+							<p:column headerText="Excluir"
+								style="width:25px;text-align: center" width="5%">
+								<p:commandButton icon="ui-icon-trash" ajax="false"
+									update="produtos"
+									actionListener="#{produtoBean.desabilitaProduto(produto)}">
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+					</p:panel>
+
+				</h:form>
+			</h:panelGroup>
+		</p:outputPanel>
+
+		<p:dialog widgetVar="infoDialog" modal="true" resizable="false"
+			styleClass="headerPainel" width="600px" height="20%"
+			header="Informações">
+			<h:panelGroup id="infoproduto">
+				<h:form acceptcharset="ISO-8859-1" id="formInfoproduto">
+
+					<h:panelGrid>
+						<h:panelGrid>
+							<p:outputLabel value="#{produtoBean.produto.nome}" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</h:form>
+			</h:panelGroup>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,127 @@
+#nomeProjeto {
+	margin-left: 7px;
+	margin-right: 5px;
+	font-family: Arial, Verdana;
+	font-size: 12px;
+}
+
+
+
+.aba {
+	font-size: 14px;
+}
+
+/*CSS para os cabe�alhos das colunas nas tabelas do sistema*/
+.ui-datatable table {
+	font-size: 11px;
+}
+
+/*CSS para a font das linhas das tabelas do sistema*/
+.ui-widget-content {
+	font-size: 11px;
+}
+
+
+.link-mouseover:hover{
+	cursor: pointer;
+}
+
+.ui-picklist-caption {
+    font-size: 11px !important;
+}
+
+.ui-picklist .ui-picklist-list {
+    height: 200px !important;
+    list-style-type: none !important;
+    margin: 0 !important;
+    overflow: auto !important;
+    padding: 0 !important;
+    width: 320px !important;
+}
+
+
+.centralizar{
+	margin: auto;
+}
+
+.headerPainel {
+	font-size: 15px !important;
+	width: 99.3%;"
+}
+
+
+
+.navbar-default .navbar-nav>li>a{
+	font-size: 14px !important;
+}
+
+
+
+ui-corner-all { border-bottom-left-radius:2px; border-bottom-right-radius:2px; border-top-left-radius:2px; border-top-right-radius:2px; }
+
+.ui-corner-top { border-top-left-radius:2px; border-top-right-radius:2px; }
+
+.ui-messages-error-icon { background-position: 0px -92px !important; }
+
+.ui-messages-info-icon { background-position: 0px -356px !important; }
+
+.ui-panel { padding: 0.1em; }
+
+.ui-menu { outline:none 0; padding:0.1em 0em !important; position:relative; width:12.5em; color: white !important;}
+
+.ui-menu ul { padding-left: 25px; }
+
+.ui-menu .ui-menuitem-text { font-size: 15px; }
+
+.ui-menu .ui-menu-parent .ui-menu-child { display:none; line-height:1.3; list-style:none; margin:0; outline:0; padding:0.1em; position:absolute; text-decoration:none; width:10.5em; }
+
+.ui-panel .ui-panel-titlebar { padding: 0.2em 0.8em 0.2em !important; }
+
+.ui-panel .ui-panel-content { background: none; border: 0; padding: 1.5em 1em; }
+
+.ui-chkbox .ui-chkbox-box { border-radius: 2px; display: inline-block; height: 12px; width: 12px; }
+
+.ui-icon-check { background-position: -66px -147px; }
+
+.ui-icon-minus { background-position: -50px -131px; }
+
+.ui-button-text-only .ui-button-text { padding: 0.36em 1em; }
+
+.ui-inputfield { font-size: 13px !important; font-weight: normal; margin: 0 !important; outline: none medium !important; padding: 4px 4px 1px !important; } /*  padding: 6px 4px 4px; */
+
+.ui-toolbar { padding: 0.1em; background-color: #dfdfdf; } /*#7096AB*/
+
+.ui-state-disabled { background-image:none; opacity:0.9 !important; background-color: #E0E0E0; color: #333 !important; }
+
+.ui-datatable-scrollable-header { border-bottom: 1px solid #A8A8A8; border-right: 1px solid #A8A8A8; border-top: 1px solid #A8A8A8; }
+
+.ui-tree-container { margin: 0; overflow: auto; padding: 15px !important; white-space: nowrap; }
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter { padding-right: 2px !important; width: 98% !important; }
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter-container { display: inline-block !important; margin: 0 !important; padding: 0.4em !important; position: relative !important; width: 95% !important; }
+
+.info { padding: 5px 0 5px 25px; background: url("/protocolo/imagem/ico_msg_info.png") no-repeat left center; }
+
+.error { padding: 5px 0 4px 25px; background: url("/protocolo/imagem/ico_msg_error.png") no-repeat left center; }
+
+.warn { padding: 5px 0 5px 25px; background: url("/protocolo/imagem/ico_msg_warn.png") no-repeat left center; }
+
+fieldset { border: 1px solid #C4C0B9; }
+
+legend{ font-size: 11px !important; font-weight: bold; height: 16px; color: #4F4F4F; padding: 0 5px; }
+
+input[type='text'], [type='password'], [type='textarea'] { background-color: #F8F8FF; padding:3px 3px 2px 3px; border-color: #999999; }
+
+input[disabled] { border: 1px solid #999 !important; background-color: #E0E0E0 !important; color: #333 !important; }
+
+select[disabled] { border: 1px solid #999 !important; background-color: #E0E0E0 !important; color: #333 !important; }
+
+textarea[disabled] { border: 1px solid #999; background-color: #E0E0E0; color: #333 !important; }
+
+input[readonly] { border: 1px solid #999; background-color: #E0E0E0; color: #333 !important; }
+
+select[readonly] { border: 1px solid #999; background-color: #E0E0E0; color: #333 !important; }
+
+label { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+

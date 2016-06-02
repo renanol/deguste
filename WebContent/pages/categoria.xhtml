@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/common.xhtml">
+	<ui:define name="body">
+
+		<p:outputPanel id="categoria">
+			<h:panelGroup rendered="#{categoriaBean.cadastroRendered}"
+				id="panelCadastrocategoria">
+
+				<p:panel header="#{msg['categoria.register']}">
+					<h:form id="formCadastrocategoria"
+						rendered="#{categoriaBean.cadastroRendered}">
+
+						<p:toolbar id="tbcategoriaCadastrar" acceptcharset="ISO-8859-1">
+							<f:facet name="left">
+								<p:commandButton value="#{msg['msg.comum.botao.salvar']}"
+									ajax="true"
+									actionListener="#{categoriaBean.cadastrocategoria()}"
+									icon="ui-icon-disk" update=":panelCadastrocategoria" />
+
+								<p:commandButton value="#{msg['msg.comum.botao.pesquisar']}"
+									ajax="true" immediate="true" icon="ui-icon-search"
+									action="#{categoriaBean.acaoPesquisar()}" update=":categoria">
+									<p:ajax event="click" />
+								</p:commandButton>
+								<p:commandButton value="#{msg['msg.comum.botao.novo']}"
+									icon="ui-icon-document" ajax="true" process="@this"
+									update=":panelCadastrocategoria"
+									actionListener="#{categoriaBean.limpar()}" />
+
+							</f:facet>
+						</p:toolbar>
+
+						<p:spacer style="width:100%; height:20px" />
+
+						<p:panel>
+							<p:messages id="msgCadastrocategoria" closable="true" />
+
+								<h:panelGrid>
+									<h:panelGrid>
+										<p:outputLabel value="#{msg['categoria.nome']}"
+											for="nomecategoria" />
+										<p:inputText id="nomecategoria" style="width:480px;"
+											required="true" value="#{categoriaBean.categoria.nome}"
+											requiredMessage="O nome do categoria é obrigatório" />
+									</h:panelGrid>
+								</h:panelGrid>
+
+
+						</p:panel>
+
+
+
+					</h:form>
+				</p:panel>
+			</h:panelGroup>
+
+
+			<h:panelGroup id="panelPesquisacategoria"
+				rendered="#{categoriaBean.pesquisaRendered}">
+				<h:form id="formPesquisacategoria"
+					rendered="#{categoriaBean.pesquisaRendered}">
+					<p:defaultCommand target="findButton" />
+
+					<p:panel header="#{msg['categoria.search']}" style="width: 99.3%;">
+						<p:toolbar id="tbCargoPesquisar">
+							<f:facet name="left">
+								<p:commandButton value="#{msg['msg.comum.botao.novo']}"
+									ajax="true" immediate="true" icon="ui-icon-document">
+									<p:ajax event="click" update=":categoria"
+										listener="#{categoriaBean.acaoCadastrar()}" />
+								</p:commandButton>
+								<p:commandButton value="#{msg['msg.comum.botao.limpar']}"
+									ajax="true" icon="ui-icon-cancel">
+									<p:ajax event="click" listener="#{categoriaBean.limpaBean()}"
+										update=":panelPesquisacategoria" />
+								</p:commandButton>
+							</f:facet>
+						</p:toolbar>
+						<p:separator style="width:100%;height:5px;" />
+						<h:panelGrid>
+							<h:panelGrid>
+								<h:panelGrid columns="2">
+									<h:panelGrid>
+										<p:outputLabel value="#{msg['categoria.nome']}"
+											for="categoriaNome" />
+										<p:inputText id="categoriaNome"
+											label="#{msg['categoria.nome']}"
+											value="#{categoriaBean.categoria.nome}"
+											style="width: 300px">
+										</p:inputText>
+									</h:panelGrid>
+								</h:panelGrid>
+							</h:panelGrid>
+
+							<p:spacer style="width:100%; height:10px" />
+
+							<f:facet name="footer">
+								<h:panelGrid columns="1">
+									<p:commandButton id="findButton"
+										value="#{msg['msg.comum.pesquisar']}" icon="ui-icon-search"
+										ajax="true"
+										actionListener="#{categoriaBean.procurarcategoria()}"
+										update="formPesquisacategoria">
+									</p:commandButton>
+								</h:panelGrid>
+							</f:facet>
+							<p:messages id="msgPesquisacategoria" closable="true" />
+						</h:panelGrid>
+						<p:separator style="width:100%;height:5px;" />
+
+						<br />
+
+						<p:dataTable id="categorias" var="categoria"
+							value="#{categoriaBean.listaCategorias}"
+							rowKey="#{categoria.id}" 
+							rendered="#{categoriaBean.dtRender}" paginator="true" rows="10"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="10,20,30" scrollRows="10" scrollable="true"
+							scrollHeight="150" lazy="true" 
+							emptyMessage="Nenhum Registro Encontrado">
+
+
+							<p:column style="text-align: center;width:60px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['categoria.id']}" />
+								</f:facet>
+								<h:outputText value="#{categoria.id} ">
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: left;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['categoria.nome']}" />
+								</f:facet>
+								<h:outputText value="#{categoria.nome}" />
+							</p:column>
+
+
+							<p:column headerText="Info" style="width:25px;text-align: center"
+								width="5%">
+								<p:commandButton icon="ui-icon-search" update=":infocategoria"
+									oncomplete="PF('infoDialog').show()" process="@this">
+									<f:setPropertyActionListener value="#{categoria}"
+										target="#{categoriaBean.categoria}" />
+								</p:commandButton>
+							</p:column>
+
+							<p:column width="90" style="text-align: center;"
+								headerText="Alterar">
+								<p:commandButton icon="ui-icon-wrench" ajax="true"
+									action="#{categoriaBean.acaoAlterar(categoria)}"
+									update=":categoria" />
+
+							</p:column>
+
+							<p:column headerText="Excluir"
+								style="width:25px;text-align: center" width="5%">
+								<p:commandButton icon="ui-icon-trash" ajax="false"
+									update="categorias"
+									actionListener="#{categoriaBean.desabilitacategoria(categoria)}">
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+					</p:panel>
+
+				</h:form>
+			</h:panelGroup>
+		</p:outputPanel>
+
+		<p:dialog widgetVar="infoDialog" modal="true" resizable="false"
+			styleClass="headerPainel" width="600px" height="650px"
+			header="Informações">
+			<h:panelGroup id="infocategoria">
+				<h:form acceptcharset="ISO-8859-1" id="formInfocategoria">
+
+					<h:panelGrid>
+						<h:panelGrid>
+							<p:outputLabel value="#{categoriaBean.categoria.nome}" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</h:form>
+			</h:panelGroup>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>
+</html>

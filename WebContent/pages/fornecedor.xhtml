@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/common.xhtml">
+	<ui:define name="body">
+
+		<p:outputPanel id="fornecedor">
+			<h:panelGroup rendered="#{fornecedorBean.cadastroRendered}"
+				id="panelCadastrofornecedor">
+
+				<p:panel header="#{msg['fornecedor.register']}">
+					<h:form id="formCadastrofornecedor"
+						rendered="#{fornecedorBean.cadastroRendered}">
+
+						<p:toolbar id="tbfornecedorCadastrar" acceptcharset="ISO-8859-1">
+							<f:facet name="left">
+								<p:commandButton value="#{msg['msg.comum.botao.salvar']}"
+									ajax="true"
+									actionListener="#{fornecedorBean.cadastroFornecedor()}"
+									icon="ui-icon-disk" update=":panelCadastrofornecedor" />
+
+								<p:commandButton value="#{msg['msg.comum.botao.pesquisar']}"
+									ajax="true" immediate="true" icon="ui-icon-search"
+									action="#{fornecedorBean.acaoPesquisar()}" update=":fornecedor">
+									<p:ajax event="click" />
+								</p:commandButton>
+								<p:commandButton value="#{msg['msg.comum.botao.novo']}"
+									icon="ui-icon-document" ajax="true" process="@this"
+									update=":panelCadastrofornecedor"
+									actionListener="#{fornecedorBean.limpar()}" />
+
+							</f:facet>
+						</p:toolbar>
+
+						<p:spacer style="width:100%; height:20px" />
+
+						<p:panel>
+							<p:messages id="msgCadastrofornecedor" closable="true" />
+
+							<fieldset>
+								<legend> Dados do Fornecedor</legend>
+								<h:panelGrid>
+									<h:panelGrid>
+										<p:outputLabel value="#{msg['fornecedor.nome']}"
+											for="nomeFornecedor" />
+										<p:inputText id="nomeFornecedor" style="width:480px;"
+											required="true" value="#{fornecedorBean.fornecedor.nome}"
+											requiredMessage="O nome do fornecedor é obrigatório" />
+									</h:panelGrid>
+								</h:panelGrid>
+
+								<h:panelGrid columns="2">
+									<h:panelGrid>
+										<p:outputLabel for="celularFornecedor"
+											value="#{msg['fornecedor.celular']}" />
+										<p:inputMask mask="(99)99999-9999"
+											value="#{fornecedorBean.fornecedor.celular}"
+											id="celularFornecedor" style="width: 100px;">
+										</p:inputMask>
+									</h:panelGrid>
+
+									<h:panelGrid>
+										<p:outputLabel for="telefoneFornecedor"
+											value="#{msg['fornecedor.telefone']}" />
+										<p:inputMask mask="(99)9999-9999" id="telefoneFornecedor"
+											required="true" value="#{fornecedorBean.fornecedor.telefone}"
+											style="width: 100px;" maxlength="20"
+											requiredMessage="O telefone do fornecedor é obrigatório">
+										</p:inputMask>
+									</h:panelGrid>
+								</h:panelGrid>
+
+								<h:panelGrid columns="2">
+									<h:panelGrid>
+										<p:outputLabel for="cnpjFornecedor"
+											value="#{msg['fornecedor.cnpj']}" />
+										<p:inputMask mask="99.999.999/9999-99" id="cnpjFornecedor"
+											style="width: 140px;"
+											value="#{fornecedorBean.fornecedor.cnpj}" maxlength="20">
+										</p:inputMask>
+									</h:panelGrid>
+									<h:panelGrid>
+										<p:outputLabel value="#{msg['fornecedor.email']}"
+											for="emailFornecedor" />
+										<p:inputText id="emailFornecedor"
+											value="#{fornecedorBean.fornecedor.email}"
+											style="width:340px;" />
+									</h:panelGrid>
+								</h:panelGrid>
+
+								<h:panelGrid>
+									<h:panelGrid>
+										<p:outputLabel for="observacaoFornecedor"
+											value="#{msg['fornecedor.observacao']}" />
+										<p:inputTextarea rows="5" cols="77" id="observacaoFornecedor"
+											value="#{fornecedorBean.fornecedor.observacao}" />
+									</h:panelGrid>
+								</h:panelGrid>
+							</fieldset>
+							<p:spacer height="20px;" />
+
+							<fieldset>
+								<legend>Endereço do Fornecedor</legend>
+
+								<h:panelGrid columns="3">
+									<h:panelGrid>
+										<h:outputLabel value="#{msg['endereco.cep']}" />
+										<p:inputMask mask="99.999-999" style="width: 100px;"
+											converter="cepConverter" id="cep"
+											value="#{fornecedorBean.fornecedor.cep}">
+											<p:ajax event="change"
+												listener="#{fornecedorBean.obterEnderecoPorCep()}"
+												update="tipoLogradouro, logradouro, numeroLogradouro, bairro, cidadeFornecedor, estadoFornecedor" />
+										</p:inputMask>
+									</h:panelGrid>
+
+									<h:panelGrid>
+										<p:outputLabel value="#{msg['endereco.cidade']}"
+											for="cidadeFornecedor" />
+										<p:inputText id="cidadeFornecedor"
+											value="#{fornecedorBean.fornecedor.cidade}"
+											style="width:100px;" />
+									</h:panelGrid>
+
+
+									<h:panelGrid>
+										<p:outputLabel value="#{msg['endereco.estado']}"
+											for="estadoFornecedor" />
+										<p:inputText id="estadoFornecedor"
+											value="#{fornecedorBean.fornecedor.estado}"
+											style="width:100px;" />
+									</h:panelGrid>
+								</h:panelGrid>
+
+								<h:panelGrid columns="2">
+									<h:panelGrid>
+										<h:outputLabel value="#{msg['endereco.tipoLogradouro']}" />
+										<p:inputText
+											value="#{fornecedorBean.fornecedor.tipoLogradouro}"
+											style="width: 150px;" id="tipoLogradouro" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<h:outputLabel value="#{msg['endereco.logradouro']}" />
+										<p:inputText value="#{fornecedorBean.fornecedor.logradouro}"
+											style="width: 320px;" id="logradouro" />
+									</h:panelGrid>
+								</h:panelGrid>
+
+								<h:panelGrid columns="2">
+									<h:panelGrid>
+										<h:outputLabel value="#{msg['endereco.numeroLogradouro']}" />
+										<p:inputText
+											value="#{fornecedorBean.fornecedor.numeroLogradouro}"
+											style="width: 80px;" id="numeroLogradouro" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<h:outputLabel value="#{msg['endereco.bairro']}" />
+										<p:inputText value="#{fornecedorBean.fornecedor.bairro}"
+											style="width: 200px;" id="bairro" />
+									</h:panelGrid>
+								</h:panelGrid>
+								<p></p>
+							</fieldset>
+						</p:panel>
+
+
+
+					</h:form>
+				</p:panel>
+			</h:panelGroup>
+
+
+			<h:panelGroup id="panelPesquisafornecedor"
+				rendered="#{fornecedorBean.pesquisaRendered}">
+				<h:form id="formPesquisafornecedor"
+					rendered="#{fornecedorBean.pesquisaRendered}">
+					<p:defaultCommand target="findButton" />
+
+					<p:panel header="#{msg['fornecedor.search']}" style="width: 99.3%;">
+						<p:toolbar id="tbCargoPesquisar">
+							<f:facet name="left">
+								<p:commandButton value="#{msg['msg.comum.botao.novo']}"
+									ajax="true" immediate="true" icon="ui-icon-document">
+									<p:ajax event="click" update=":fornecedor"
+										listener="#{fornecedorBean.acaoCadastrar()}" />
+								</p:commandButton>
+								<p:commandButton value="#{msg['msg.comum.botao.limpar']}"
+									ajax="true" icon="ui-icon-cancel">
+									<p:ajax event="click" listener="#{fornecedorBean.limpaBean()}"
+										update=":panelPesquisafornecedor" />
+								</p:commandButton>
+							</f:facet>
+						</p:toolbar>
+						<p:separator style="width:100%;height:5px;" />
+						<h:panelGrid>
+							<h:panelGrid>
+								<h:panelGrid columns="2">
+									<h:panelGrid>
+										<p:outputLabel value="#{msg['fornecedor.cnpj']}"
+											for="fornecedor" />
+										<p:inputText id="fornecedor" style="width: 192px;"
+											value="#{fornecedorBean.fornecedor.cnpj}"
+											requiredMessage="Campo obrigatório." maxlength="14"
+											onkeyup="mascara(this, cpfCnpj)" onfocus="this.select()">
+										</p:inputText>
+									</h:panelGrid>
+									<h:panelGrid>
+										<p:outputLabel value="#{msg['fornecedor.nome']}"
+											for="fornecedorNome" />
+										<p:inputText id="fornecedorNome"
+											label="#{msg['fornecedor.nome']}"
+											value="#{fornecedorBean.fornecedor.nome}"
+											style="width: 300px">
+										</p:inputText>
+									</h:panelGrid>
+								</h:panelGrid>
+							</h:panelGrid>
+
+							<p:spacer style="width:100%; height:10px" />
+
+							<f:facet name="footer">
+								<h:panelGrid columns="1">
+									<p:commandButton id="findButton"
+										value="#{msg['msg.comum.pesquisar']}" icon="ui-icon-search"
+										ajax="true"
+										actionListener="#{fornecedorBean.procurarFornecedor()}"
+										update="formPesquisafornecedor">
+									</p:commandButton>
+								</h:panelGrid>
+							</f:facet>
+							<p:messages id="msgPesquisafornecedor" closable="true" />
+						</h:panelGrid>
+						<p:separator style="width:100%;height:5px;" />
+
+						<br />
+
+						<p:dataTable id="fornecedors" var="fornecedor"
+							value="#{fornecedorBean.listaFornecedores}"
+							rowKey="#{fornecedor.id}" 
+							rendered="#{fornecedorBean.dtRender}" paginator="true" rows="10"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="10,20,30" scrollRows="10" scrollable="true"
+							scrollHeight="150" lazy="true" 
+							emptyMessage="Nenhum Registro Encontrado">
+
+
+							<p:column style="text-align: center;width:60px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['fornecedor.id']}" />
+								</f:facet>
+								<h:outputText value="#{fornecedor.id} ">
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: left;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['fornecedor.nome']}" />
+								</f:facet>
+								<h:outputText value="#{fornecedor.nome}" />
+							</p:column>
+
+							<p:column style="text-align: center; width:160px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['fornecedor.cnpj']}" />
+								</f:facet>
+								<h:outputText value="#{fornecedor.cnpj}" />
+							</p:column>
+
+							<p:column style="text-align: center; width:120px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['fornecedor.telefone']}" />
+								</f:facet>
+								<h:outputText value="#{fornecedor.telefone}" />
+							</p:column>
+
+							<p:column headerText="Info" style="width:25px;text-align: center"
+								width="5%">
+								<p:commandButton icon="ui-icon-search" update=":infoFornecedor"
+									oncomplete="PF('infoDialog').show()" process="@this">
+									<f:setPropertyActionListener value="#{fornecedor}"
+										target="#{fornecedorBean.fornecedor}" />
+								</p:commandButton>
+							</p:column>
+
+							<p:column width="90" style="text-align: center;"
+								headerText="Alterar">
+								<p:commandButton icon="ui-icon-wrench" ajax="true"
+									action="#{fornecedorBean.acaoAlterar(fornecedor)}"
+									update=":fornecedor" />
+
+							</p:column>
+
+							<p:column headerText="Excluir"
+								style="width:25px;text-align: center" width="5%">
+								<p:commandButton icon="ui-icon-trash" ajax="false"
+									update="fornecedors"
+									actionListener="#{fornecedorBean.desabilitafornecedor(fornecedor)}">
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+					</p:panel>
+
+				</h:form>
+			</h:panelGroup>
+		</p:outputPanel>
+
+		<p:dialog widgetVar="infoDialog" modal="true" resizable="false"
+			styleClass="headerPainel" width="600px" height="650px"
+			header="Informações">
+			<h:panelGroup id="infoFornecedor">
+				<h:form acceptcharset="ISO-8859-1" id="formInfoFornecedor">
+
+					<h:panelGrid>
+						<h:panelGrid>
+							<p:outputLabel value="#{fornecedorBean.fornecedor.nome}" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</h:form>
+			</h:panelGroup>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>
+</html>

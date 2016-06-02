@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+       xmlns:p="http://primefaces.org/ui">
+      	<ui:composition>
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+			</f:facet>
+			
+			<ui:insert name="pageTitle"><title>Deguste</title></ui:insert>
+			<script type="text/javascript" src="/deguste/js/mask.js"></script>
+			<script type="text/javascript" src="/deguste/js/jquery.maskedinput.js"></script>
+			<script type="text/javascript" src="/deguste/js/script.js"></script>
+			<link href="/deguste/css/principal.css" rel="stylesheet" type="text/css" media="all" />
+			<link href="/deguste/css/aplicacao.css" rel="stylesheet" type="text/css" media="all" />
+			<link href="/deguste/css/topo.css" rel="stylesheet" type="text/css" media="all" />
+			<link href="/deguste/css/menu.css" rel="stylesheet" type="text/css" media="all" />
+			<link href="/deguste/css/telaGerenciar.css" rel="stylesheet" type="text/css" media="all" />
+			<script src="/deguste/js/jquery.fn.gantt.js"></script>
+			<link rel="icon" href="/deguste/imagem/Logo30x30.png" type="x-icon" />
+			
+				<script type="text/javascript" >
+				var tempo = new Number();
+				var timeOutSession;
+				
+				function startCountdown(){
+				// Tempo em segundos
+				clearTimeout(timeOutSession);	
+				tempo = 1200;
+				countDownSession();
+				}
+				
+				function countDownSession(){
+				
+				   // Se o tempo não for zerado
+				   if((tempo - 1) >= 0){
+				
+				       // Pega a parte inteira dos minutos
+				       var min = parseInt(tempo/60);
+				       // Calcula os segundos restantes
+				       var seg = tempo%60;
+				
+				       //Formata o número menor que dez, ex: 08, 07, ...
+				       if(min &lt; 10){
+				           min = "0"+min;
+				           min = min.substr(0, 2);
+				       }
+				       if(seg &lt;=9){
+				           seg = "0"+seg;
+				       }
+				
+				       // Cria a variável para formatar no estilo hora/cronômetro
+				       horaImprimivel = '00:' + min + ':' + seg;
+				       //JQuery pra setar o valor
+				       $("#sessaoUsuario").html(horaImprimivel);
+				       
+				       // Define que a função será executada novamente em 1000ms = 1 segundo
+				       timeOutSession = setTimeout('countDownSession()',1000);
+				
+				       // diminui o tempo
+				       tempo--;
+				
+				   // Quando o contador chegar a zero, executa esta ação
+				   } else {
+				    history.go(0);//window.open('../controllers/logout.php', '_self');
+				   }
+				}
+				
+				// Chama a função ao carregar a tela
+				startCountdown();
+
+			</script>
+			
+			
+			
+			
+		</h:head>
+
+		<h:body>
+			<f:view contentType="text/html" encoding="ISO-8859-1">
+				<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+				<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+					<h:panelGrid cellpadding="5">
+						<h:graphicImage value="/imagem/ajaxloader.gif" style="margin-left: 10px;" />
+	         			<h:outputText value="Aguarde..." style="font-size: 12px;" />
+         			</h:panelGrid>
+				</p:dialog>
+
+				<ui:remove>
+					<p:growl id="message" showDetail="true" />
+				</ui:remove>
+				<div id="pagina">
+					<ui:insert name="header">
+						<ui:include src="topo.xhtml" />
+					</ui:insert>
+					<div id="geral">
+
+						<div id="corpo" class="corpo">
+							
+							<ui:insert name="body" />
+						</div>
+						<table style="margin: auto;"><tr><td>
+							<ui:insert name="extrabody" />
+						</td></tr></table>
+					</div>
+				</div>
+				
+				<div id="rodape">
+				
+				</div>
+			
+			</f:view>
+		</h:body>
+		</ui:composition>
+</html>

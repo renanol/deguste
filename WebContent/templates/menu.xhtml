@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui" 
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form >
+		<div>
+
+
+			<b:navBar  inverse="true">
+				<b:navbarLinks pull="left" >
+				<b:navbarLinks id="menuBoot">
+					<b:dropMenu id="cadastrosMenu" value="Cadastros"
+						iconAwesome="birthday-cake">
+						<b:navLink value="Usuários" href="usuario.xhtml"></b:navLink> 
+						<b:navLink value="Fornecedores" href="fornecedor.xhtml"></b:navLink> 
+						<b:navLink value="Funcionários" href="funcionario.xhtml"></b:navLink> 
+						<b:navLink value="Produtos" href="produto.xhtml"></b:navLink> 
+						<b:navLink value="Clientes" href="cliente.xhtml"></b:navLink> 
+						<b:navLink value="Unidades de Medida do Produto" href="unidademedida.xhtml"></b:navLink>
+						<b:navLink value="Categorias do Produto" href="categoria.xhtml"></b:navLink>  
+						<b:navLink value="Avarias" href="avaria.xhtml"></b:navLink> 
+					</b:dropMenu>
+				</b:navbarLinks>
+				<b:navLink    value="Venda" href="venda.xhtml"></b:navLink>
+				</b:navbarLinks>
+				<b:navbarLinks pull="right" styleClass="hidden-xs">
+					<b:dropMenu value="#{sessionBean.nomeUsuarioLogado()}" rendered="#{sessionBean.loggedIn()}">
+						<h:panelGrid columns="1">
+							<h:panelGrid>
+								<b:commandButton value="Último Acesso" look="link"
+									actionListener="#{sessionBean.logout()}" />
+							</h:panelGrid>
+							<h:panelGrid>
+								<b:commandButton value="Alterar Senha" look="link" />
+							</h:panelGrid>
+							<h:panelGrid>	
+								<b:commandButton value="Sair" look="link"
+									actionListener="#{sessionBean.logout()}" />
+							</h:panelGrid>
+						</h:panelGrid>	
+					</b:dropMenu>
+				</b:navbarLinks>
+			</b:navBar>
+
+
+		</div>
+	</h:form>
+
+
+</ui:composition>
+

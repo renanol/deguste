@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/common.xhtml">
+	<ui:define name="body">
+	
+		
+		<script type="text/javascript">
+	$("#related_image .start").hide();
+</script>
+		<style>
+<!--
+.ui-fileupload-upload {
+	display: none !important;
+}
+
+.ui-fileupload-progress {
+	display: none !important;
+}
+
+.ui-fileupload-files .ui-fileupload-cancel {
+	display: none !important;
+}
+-->
+</style>
+
+<p:outputPanel id="funcionario">
+	<h:panelGroup rendered="#{funcionarioBean.cadastroRendered}" id="panelCadastrofuncionario">
+
+		<p:panel header="#{msg['funcionario.register']}">
+			<h:form id="formCadastrofuncionario"
+				rendered="#{funcionarioBean.cadastroRendered}">
+
+				<p:toolbar id="tbfuncionarioCadastrar" acceptcharset="ISO-8859-1">
+					<f:facet name="left">
+						<p:commandButton value="#{msg['msg.comum.botao.salvar']}"
+							ajax="true" actionListener="#{funcionarioBean.cadastrofuncionario()}"
+							icon="ui-icon-disk" onclick="PF('wUpFileP').upload();" update=":panelCadastrofuncionario"/>
+						
+						<p:commandButton value="#{msg['msg.comum.botao.pesquisar']}"
+							ajax="true" immediate="true" icon="ui-icon-search" 
+							action="#{funcionarioBean.acaoPesquisar()}" update=":funcionario">
+							<p:ajax event="click" />
+						</p:commandButton>
+						<p:commandButton value="#{msg['msg.comum.botao.novo']}"
+							icon="ui-icon-document" ajax="true" process="@this" 
+							update=":panelCadastrofuncionario"  actionListener="#{funcionarioBean.limpar()}"/>
+						
+						<p:commandButton icon="ui-icon-trash"
+							onclick="PF('deletaDialogfuncionario').show()"
+							value="#{msg['msg.comum.botao.excluir']}" process="@this"
+							rendered="#{funcionarioBean.botaoApagarRendered}" />
+					</f:facet>
+				</p:toolbar>
+
+				<p:spacer style="width:100%; height:20px"/>
+					<p:messages id="msgCadastrofuncionario" closable="true" />
+					
+
+					<p:spacer height="10px" />
+						
+						<div style="float: left; width: 65%">
+							<p:panel style="width: 750px !important;">
+							
+							<h:panelGrid columns="2" >
+								<h:panelGrid >
+									<p:outputLabel for="cpfFuncionario"
+										value="#{msg['funcionario.cpf']}" />
+									<p:inputText value="#{funcionarioBean.funcionario.cpf}"
+										id="cpfFuncionario" required="true" maxlength="14"
+										requiredMessage="O CPF é obrigatório"
+										onkeyup="mascara(this, cpfCnpj)" onfocus="this.select()" />
+								</h:panelGrid>
+
+								<h:panelGrid >
+									<p:outputLabel for="nomeFuncionario"
+										value="#{msg['funcionario.nome']}" />
+									<p:inputText id="nomeFuncionario"
+										value="#{funcionarioBean.funcionario.nome}" required="true"
+										maxlength="70" style="width: 430px"
+										requiredMessage="O nome do funcionário é obrigatório" />
+								</h:panelGrid>
+							</h:panelGrid>
+
+							<h:panelGrid columns="2">
+								<h:panelGrid>
+									<p:outputLabel for="rg" value="#{msg['funcionario.rg']}" />
+									<p:inputText id="rg" required="true"
+										value="#{funcionarioBean.funcionario.rg}" maxlength="8"
+										requiredMessage="O campo é obrigatório" />
+								</h:panelGrid>
+								<h:panelGrid>
+									<p:outputLabel for="orgaoExpeditor"
+										value="#{msg['funcionario.orgaoExpeditor']}" />
+									<p:inputText id="orgaoExpeditor" required="true"
+										value="#{funcionarioBean.funcionario.orgaoExpeditor}"
+										maxlength="6" requiredMessage="O campo é obrigatório" />
+								</h:panelGrid>
+							</h:panelGrid>
+
+							<h:panelGrid columns="2">
+								<h:panelGrid>
+									<p:outputLabel for="telefoneFuncionario"
+										value="#{msg['funcionario.telefone']}" />
+									<p:inputText id="telefoneFuncionario" maxlength="14"
+										required="true"
+										value="#{funcionarioBean.funcionario.telefone}"
+										requiredMessage="O campo telefone é obrigatório"
+										onkeyup="mascara(this, telefone)" onfocus="this.select()" />
+								</h:panelGrid>
+								<h:panelGrid>
+									<p:outputLabel for="emailFuncionario"
+										value="#{msg['funcionario.email']}" />
+									<p:inputText id="emailFuncionario" required="true"
+										requiredMessage="O campo email é obrigatório" style="width: 430px"
+										value="#{funcionarioBean.funcionario.email}" maxlength="70" />
+								</h:panelGrid>
+							</h:panelGrid>
+						</p:panel>					
+						</div>
+						<div style="float: right; width: 35%">	
+							<p:panel header="#{msg['funcionario.imagem']}" styleClass="headerPainel">
+						<h:panelGrid>
+							<p:graphicImage rendered="#{funcionarioBean.existeImagem()}"
+								id="foto"
+								style="float: left; width: 250px; margin-left: 90px !important;"
+								value="/ServletImage?id=#{funcionarioBean.funcionario.id}&amp;tipoFoto=#{funcionarioBean.funcionario.tipoFoto}" />
+						</h:panelGrid>
+						<p:spacer height="20px" />
+						<p:fileUpload id="upFileP" widgetVar="wUpFileP" fileLimit="1"
+							fileLimitMessage="Número máximo de fotos excedeu"
+							style="width: 250px; margin-left: 90px !important;"
+							label="Nova Foto" cancelLabel="Cancelar" mode="advanced"
+							fileUploadListener="#{funcionarioBean.uploadFile}" />
+					</p:panel>
+						</div>
+						<div style="clear: both"></div>
+						
+		
+			
+			
+			</h:form>
+		</p:panel>
+	</h:panelGroup>
+
+
+<h:panelGroup id="panelPesquisafuncionario" rendered="#{funcionarioBean.pesquisaRendered}">
+				<h:form id="formPesquisafuncionario"  rendered="#{funcionarioBean.pesquisaRendered}">
+					<p:defaultCommand target="findButton"/>
+					
+					<p:panel header="#{msg['funcionario.search']}" style="width: 99.3%;">
+						<p:toolbar id="tbCargoPesquisar">
+						    <f:facet name="left">
+								<p:commandButton value="#{msg['msg.comum.botao.novo']}" ajax="true" immediate="true"
+												 icon="ui-icon-document" 
+												 >
+									<p:ajax event="click"    
+											update=":funcionario"
+											listener="#{funcionarioBean.acaoCadastrar()}" 
+											/>
+								</p:commandButton>
+								<p:commandButton value="#{msg['msg.comum.botao.alterar']}" ajax="true"  
+												 icon="ui-icon-wrench"
+												 >
+									<p:ajax event="click"   
+												listener="#{funcionarioBean.acaoAlterar()}" 
+												 update=":funcionario"
+											/>
+								</p:commandButton>
+								<p:commandButton value="#{msg['msg.comum.botao.limpar']}" ajax="true"  
+												 icon="ui-icon-cancel">
+									<p:ajax event="click"    
+											listener="#{funcionarioBean.limpaBean()}"
+												 update=":panelPesquisafuncionario"/>
+								</p:commandButton>
+						    </f:facet>
+						</p:toolbar>
+						<p:separator style="width:100%;height:5px;" />
+							<h:panelGrid> 
+								<h:panelGrid >
+									<h:panelGrid columns="2">
+										<h:panelGrid>
+											<p:outputLabel value="#{msg['funcionario.cpf']}" for= "funcionario"/>
+											<p:inputText id="funcionario" style="width: 192px;" 
+												value="#{funcionarioBean.funcionario.cpf}" 
+												requiredMessage="Campo obrigatório." maxlength="14"
+												onkeyup="mascara(this, cpfCnpj)" onfocus="this.select()" >
+											</p:inputText>
+										</h:panelGrid>
+										<h:panelGrid>
+											<p:outputLabel value="#{msg['funcionario.nome']}" for="funcionarioNome" />
+											<p:inputText id="funcionarioNome"  label="#{msg['funcionario.nome']}"
+												value="#{funcionarioBean.funcionario.nome}" style="width: 300px" >
+											</p:inputText>
+										</h:panelGrid>
+									</h:panelGrid>
+								</h:panelGrid>
+								
+								<p:spacer style="width:100%; height:10px"/>
+								
+								<f:facet name="footer" >
+									<h:panelGrid columns="1" >
+						                <p:commandButton id="findButton" value="#{msg['msg.comum.pesquisar']}" icon="ui-icon-search"  ajax="true"
+						                	actionListener="#{funcionarioBean.procurarFuncionario()}" 
+						                	  update="formPesquisafuncionario"
+						                                   >
+						                </p:commandButton>  
+									</h:panelGrid>
+							    </f:facet>
+								<p:messages id="msgPesquisafuncionario" closable="true" />
+							</h:panelGrid>
+						<p:separator style="width:100%;height:5px;" />
+						
+						<br />
+
+						<p:dataTable id="funcionarios" var="funcionario"
+							value="#{funcionarioBean.listaFuncionarios}"
+							rowKey="#{funcionario.id}" selectionMode="single"
+							paginator="true" rows="10"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="10,20,30" scrollRows="10" scrollable="true"
+							scrollHeight="150" lazy="true" rowIndexVar="rowIndex"
+							emptyMessage="Nenhum Registro Encontrado">
+
+							<p:ajax event="rowSelect"
+								listener="#{funcionarioBean.selecionarObjetoEvent}" />
+
+							<p:column style="text-align: center;width:60px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['funcionario.id']}" />
+								</f:facet>
+								<h:outputText value="#{funcionario.id} ">
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: left;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['funcionario.nome']}" />
+								</f:facet>
+								<h:outputText value="#{funcionario.nome}" />
+							</p:column>
+
+							<p:column style="text-align: center; width:160px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['funcionario.cpf']}" />
+								</f:facet>
+								<h:outputText value="#{funcionario.cpf}" />
+							</p:column>
+
+							<p:column style="text-align: center; width:120px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['funcionario.rg']}" />
+								</f:facet>
+								<h:outputText value="#{funcionario.rg}" />
+							</p:column>
+
+							<p:column style="text-align: center; width:120px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg['funcionario.telefone']}" />
+								</f:facet>
+								<h:outputText value="#{funcionario.telefone}" />
+							</p:column>
+
+						</p:dataTable>
+					</p:panel>
+				      
+				</h:form>
+			</h:panelGroup>		
+	</p:outputPanel>	
+		
+	
+	</ui:define>
+</ui:composition>	
+	</html>

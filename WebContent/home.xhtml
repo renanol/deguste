@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+
+
+<ui:composition template="/templates/common.xhtml">
+	<ui:define name="body">
+		<link href="/deguste/css/principal.css" rel="stylesheet" type="text/css" media="all" />	
+		
+		<div style="width: 100%; height: 120px !important;"></div>
+
+		<div style="float: left; width: 50%;">
+				<div id="divLogo"
+					style="height: 320px; width: 289px; margin: auto !important; margin-top: 30px !important;">
+
+			<a href="/deguste">
+				<img src="/deguste/imagem/LogoDguste.png" width="380" height="200" alt="logo D'guste" />
+			</a>
+				</div>
+		</div>
+
+		<div style="float: right; width: 50%; border-left: solid 1px rgba(10, 10, 10, 0.25) !important;">
+				<h:form acceptcharset="ISO-8859-1" id="formLogin" >
+
+				<div id="divLogin" 
+					style="height: 320px; width: 289px; margin: auto !important; ">
+					<h2 class="acessoSistema">Acesso ao Sistema</h2>
+
+					<p:spacer height="6px !important" />
+					
+					<p:messages  id="messageLogin"   closable="true" />
+					
+					<p:defaultCommand target="buttonL"/>
+					
+					<h:panelGrid columns="1">
+						<h:panelGrid>
+							<p:outputLabel styleClass="outputLogin" value="LOGIN" />
+							<b:inputText styleClass="inputLogin" required="true"
+								placeholder="Digite seu Login" requiredMessage="O campo login está em branco"
+								 value="#{loginBean.usuario.login}" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<h:panelGrid>
+							<p:outputLabel styleClass="outputLogin" value="SENHA" />
+							<p:password styleClass="inputLogin" required="true" value="#{loginBean.usuario.senha}"
+								placeholder="Digite sua Senha" requiredMessage="O campo senha está em branco" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<h:panelGrid>
+							<p:commandLink value="Recuperar Senha" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+			
+			
+					<h:panelGrid columns="1">
+						<h:panelGrid>
+							<b:commandButton styleClass="botaoLogar" ajax="true" look="primary" id="buttonL"
+								actionListener="#{loginBean.logar()}"  action="#{loginBean.paginaRed()}" 
+								update="@next, formLogin:messageLogin"  value="Entrar" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+
+
+				</div>
+			</h:form>
+		</div>
+
+
+		<div style="clear: both"></div>
+	</ui:define>
+	</ui:composition>
+
+</html>
